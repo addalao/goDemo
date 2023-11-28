@@ -19,6 +19,10 @@ type (
 	GetDetailsRes {
 		UserName string `json:"userName"`
 	}
+	GetContentReq {
+		Page     int64 `json:"page"`
+		PageSize int64 `json:"pageSize"`
+	}
 )
 @server (
 	prefix: v1
@@ -34,7 +38,7 @@ service goDemo-api {
 
 	@doc "内容"
 	@handler GetContent
-	get /content
+	get /content (GetContentReq)
 }
 
 @server(

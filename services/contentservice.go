@@ -24,3 +24,7 @@ func NewContentService(db *gorm.DB, rds *redis.Redis) *ContentService {
 	}
 
 }
+
+func (s *ContentService) GetContentItem(id string) {
+	println(id)
+}

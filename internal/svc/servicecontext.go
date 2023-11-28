@@ -12,8 +12,7 @@ import (
 type ServiceContext struct {
 	Config         config.Config
 	Db             *gorm.DB
-	rds            *redis.Redis
-	contentService *services.ContentService
+	ContentService *services.ContentService
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -39,6 +38,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:         c,
 		Db:             db,
-		contentService: services.NewContentService(db, rds),
+		ContentService: services.NewContentService(db, rds),
 	}
 }

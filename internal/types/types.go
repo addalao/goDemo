@@ -26,3 +26,8 @@ type RegisterReq struct {
 type GetDetailsRes struct {
 	UserName string `json:"userName"`
 }
+
+type GetContentReq struct {
+	Page     int64 `json:"page"`
+	PageSize int64 `json:"pageSize"`
+}
