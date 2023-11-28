@@ -14,7 +14,6 @@ type ContentService struct {
 
 func NewContentService(db *gorm.DB, rds *redis.Redis) *ContentService {
 	err := db.AutoMigrate(&models.Content{})
-	fmt.Printf("err-------------%s\n", err)
 
 	if err != nil {
 		panic("")
@@ -27,6 +26,25 @@ func NewContentService(db *gorm.DB, rds *redis.Redis) *ContentService {
 
 }
 
-func (s *ContentService) GetContentItem(id string) {
-	println(id)
+func (s *ContentService) GetContentItem() (err error) {
+
+	_, err = s.rds.Zadd("sortName", 1, "liufei")
+
+	if err != nil {
+		return
+	}
+
+	zRange, err := s.rds.Zrange("sortName", 0, -1)
+
+	fmt.Printf("len(zRange)---------%v\n", len(zRange))
+
+	if err != nil {
+		return err
+	}
+
+	for _, s2 := range zRange {
+		println(s2)
+	}
+
+	return
 }
