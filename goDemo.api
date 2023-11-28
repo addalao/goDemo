@@ -1,0 +1,49 @@
+type (
+	Request {
+		Name string `path:"name,options=you|me"`
+	}
+	Response {
+		Message string `json:"message"`
+	}
+	LoginReq {
+		UserName string `json:"userName"`
+		Password string `json:"password"`
+	}
+	LogingRes {
+		Token string `json:"token"`
+	}
+	RegisterReq {
+		UserName string `json:"userName"`
+		Password string `json:"password"`
+	}
+	GetDetailsRes {
+		UserName string `json:"userName"`
+	}
+)
+@server (
+	prefix: v1
+)
+service goDemo-api {
+	@doc "登录"
+	@handler Login
+	post /login (LoginReq) returns (LogingRes)
+
+	@doc  "注册"
+	@handler Register
+	post /register (RegisterReq)
+
+	@doc "内容"
+	@handler GetContent
+	get /content
+}
+
+@server(
+	prefix: v1
+	jwt: Auth
+	group: GetDetails
+)
+service goDemo-api {
+	@doc "获取用户详情"
+	@handler GetDetails
+	get /GetDetails  returns (GetDetailsRes)
+}

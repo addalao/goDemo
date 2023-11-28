@@ -1,0 +1,10 @@
+Name: goDemo-api
+Host: 0.0.0.0
+Port: 8888
+Author: liufei
+SecretKey: zhwsecret777
+Postgres:
+  Dsn: host=127.0.0.1 port=1076 user=postgres password=123456 dbname=project TimeZone=Asia/Shanghai
+  IsMigration: true
+RedisConf:
+  RedisConf: 127.0.0.1:6380
