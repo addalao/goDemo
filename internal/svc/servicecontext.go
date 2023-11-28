@@ -10,9 +10,11 @@ import (
 )
 
 type ServiceContext struct {
-	Config         config.Config
-	Db             *gorm.DB
-	ContentService *services.ContentService
+	Config               config.Config
+	Db                   *gorm.DB
+	ContentService       *services.ContentService
+	UserService          *services.UserService
+	AuthorizationService *services.AuthorizationService
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -37,8 +39,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 
 	return &ServiceContext{
-		Config:         c,
-		Db:             db,
-		ContentService: services.NewContentService(db, rds),
+		Config:               c,
+		Db:                   db,
+		ContentService:       services.NewContentService(db, rds),
+		UserService:          services.NewUserService(db, rds),
+		AuthorizationService: services.NewAuthorizationService(c.Auth.AccessSecret),
 	}
 }

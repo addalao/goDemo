@@ -14,7 +14,6 @@ type Config struct {
 	rest.RestConf
 	Author    string
 	Postgres  Postgres
-	SecretKey string
 	RedisConf redis.RedisConf
 	Auth      struct {
 		AccessSecret string

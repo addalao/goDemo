@@ -31,3 +31,10 @@ type GetContentReq struct {
 	Page     int64 `form:"page"`
 	PageSize int64 `form:"pageSize"`
 }
+
+type AddContentReq struct {
+	Title         string `json:"title"`
+	Content       string `json:"content"`
+	Gender        int16  `json:"gender"` // 1 男 2女
+	Authorization string `header:"authorization, optional"`
+}

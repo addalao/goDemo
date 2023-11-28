@@ -8,4 +8,5 @@ type Content struct {
 	Title   string
 	Content string
 	Image   string
+	Gender  int16 // 1男 2女
 }

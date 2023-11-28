@@ -7,6 +7,7 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 	"goDemo/internal/config"
 	"goDemo/internal/handler"
+	"goDemo/internal/jurisdiction"
 	"goDemo/internal/svc"
 )
 
@@ -23,6 +24,12 @@ func main() {
 	//
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
+
+	jur := jurisdiction.AuthorizationMiddleware{
+		Ctx: ctx,
+	}
+
+	server.Use(jur.Authorization)
 	//
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()

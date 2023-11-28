@@ -39,6 +39,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/GetDetails",
 				Handler: GetDetails.GetDetailsHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/content/add",
+				Handler: GetDetails.AddContentHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/v1"),

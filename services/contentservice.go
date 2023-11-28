@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"goDemo/models"
 	"gorm.io/gorm"
@@ -36,8 +35,6 @@ func (s *ContentService) GetContentItem() (err error) {
 
 	zRange, err := s.rds.Zrange("sortName", 0, -1)
 
-	fmt.Printf("len(zRange)---------%v\n", len(zRange))
-
 	if err != nil {
 		return err
 	}
@@ -47,4 +44,17 @@ func (s *ContentService) GetContentItem() (err error) {
 	}
 
 	return
+}
+
+// Create 创建
+func (s *ContentService) Create(userId string, title string, content string, image string, gender int16) error {
+
+	return s.db.Create(&models.Content{
+		UserId:  userId,
+		Title:   title,
+		Content: content,
+		Image:   image,
+		Gender:  gender,
+	}).Error
+
 }
