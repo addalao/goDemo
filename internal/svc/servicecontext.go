@@ -17,6 +17,7 @@ type ServiceContext struct {
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	db, err := gorm.Open(postgres.Open(c.Postgres.Dsn))
+
 	if err != nil {
 
 		panic(err)

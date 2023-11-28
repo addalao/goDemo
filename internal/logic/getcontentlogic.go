@@ -24,6 +24,7 @@ func NewGetContentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetCon
 }
 
 func (l *GetContentLogic) GetContent(req *types.GetContentReq) error {
+	l.svcCtx.ContentService.GetContentItem("")
 
 	return nil
 }

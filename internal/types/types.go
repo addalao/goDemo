@@ -28,6 +28,6 @@ type GetDetailsRes struct {
 }
 
 type GetContentReq struct {
-	Page     int64 `json:"page"`
-	PageSize int64 `json:"pageSize"`
+	Page     int64 `form:"page"`
+	PageSize int64 `form:"pageSize"`
 }
