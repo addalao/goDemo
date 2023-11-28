@@ -23,6 +23,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/register",
 				Handler: RegisterHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/content",
+				Handler: GetContentHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/v1"),
 	)
@@ -35,7 +40,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: GetDetails.GetDetailsHandler(serverCtx),
 			},
 		},
-		rest.WithJwt(serverCtx.Config.SecretKey),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/v1"),
 	)
 }

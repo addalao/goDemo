@@ -4,14 +4,16 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"goDemo/internal/config"
 	"goDemo/models"
+	"goDemo/services"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type ServiceContext struct {
-	Config config.Config
-	Db     *gorm.DB
-	rds    *redis.Redis
+	Config         config.Config
+	Db             *gorm.DB
+	rds            *redis.Redis
+	contentService *services.ContentService
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -21,15 +23,13 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		panic(err)
 	}
 
-	//rds := redis.MustNewRedis(c.RedisConf)
+	rds := redis.MustNewRedis(c.RedisConf)
 
 	tables := []interface{}{
 		&models.User{},
 	}
 	for _, table := range tables {
 		err := db.AutoMigrate(table)
-		println("err")
-		println(err == nil) // true
 
 		if err != nil {
 			panic(err)
@@ -37,7 +37,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 
 	return &ServiceContext{
-		Config: c,
-		Db:     db,
+		Config:         c,
+		Db:             db,
+		contentService: services.NewContentService(db, rds),
 	}
 }

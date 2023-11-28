@@ -7,4 +7,7 @@ Postgres:
   Dsn: host=127.0.0.1 port=1076 user=postgres password=123456 dbname=project TimeZone=Asia/Shanghai
   IsMigration: true
 RedisConf:
-  RedisConf: 127.0.0.1:6380
+  Host: 127.0.0.1:6380
+Auth:
+  AccessSecret: 13e048f7c2ba661ea4c67e33a5994b5f
+  AccessExpire: 1296000  #jwt有效期(秒)

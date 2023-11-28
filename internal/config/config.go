@@ -16,4 +16,8 @@ type Config struct {
 	Postgres  Postgres
 	SecretKey string
 	RedisConf redis.RedisConf
+	Auth      struct {
+		AccessSecret string
+		AccessExpire int64
+	}
 }
