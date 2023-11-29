@@ -15,20 +15,34 @@ type (
 	RegisterReq {
 		UserName string `json:"userName"`
 		Password string `json:"password"`
+		Gender   int16  `json:"gender"`
 	}
 	GetDetailsRes {
 		UserName string `json:"userName"`
 	}
 
 	GetContentReq {
-		Page     int64 `form:"page"`
-		PageSize int64 `form:"pageSize"`
+		Page     int `form:"page"`
+		PageSize int `form:"pageSize"`
+	}
+
+	GetContentRespItem {
+		Id      string `json:"id"`
+		UserId  string `json:"userId"`
+		Content string `json:"content"`
+		Title   string `json:"title"`
+		View    int64  `json:"view"`
+		Like    int64  `json:"like"`
+	}
+
+	GetContentResp {
+		Items []GetContentRespItem `json:"items"`
+		Total int64                `json:"total"`
 	}
 
 	AddContentReq {
 		Title         string `json:"title"`
 		Content       string `json:"content"`
-		Gender        int16  `json:"gender"` // 1 男 2女
 		Authorization string `header:"authorization, optional"`
 	}
 )
@@ -44,9 +58,9 @@ service goDemo-api {
 	@handler Register
 	post /register (RegisterReq)
 
-	@doc "内容"
+	@doc "获取内容"
 	@handler GetContent
-	get /content (GetContentReq)
+	get /content (GetContentReq) returns (GetContentResp)
 }
 
 @server(

@@ -15,7 +15,7 @@ func NewContentService(db *gorm.DB, rds *redis.Redis) *ContentService {
 	err := db.AutoMigrate(&models.Content{})
 
 	if err != nil {
-		panic("")
+		panic("Content")
 	}
 
 	return &ContentService{
@@ -25,36 +25,37 @@ func NewContentService(db *gorm.DB, rds *redis.Redis) *ContentService {
 
 }
 
-func (s *ContentService) GetContentItem() (err error) {
+func (s *ContentService) GetContentItem(page int, pageSize int) (items []*models.Content, total int64, err error) {
 
-	_, err = s.rds.Zadd("sortName", 1, "liufei")
+	page = (page - 1) * pageSize
+
+	query := s.db.Model(&models.Content{})
+
+	err = query.Error
 
 	if err != nil {
 		return
 	}
 
-	zRange, err := s.rds.Zrange("sortName", 0, -1)
+	err = query.Count(&total).Error
 
 	if err != nil {
-		return err
+		return
 	}
 
-	for _, s2 := range zRange {
-		println(s2)
-	}
+	err = query.Offset(page).Limit(pageSize).Scan(&items).Error
 
 	return
 }
 
 // Create 创建
-func (s *ContentService) Create(userId string, title string, content string, image string, gender int16) error {
+func (s *ContentService) Create(userId string, title string, content string, image string) error {
 
 	return s.db.Create(&models.Content{
 		UserId:  userId,
 		Title:   title,
 		Content: content,
 		Image:   image,
-		Gender:  gender,
 	}).Error
 
 }

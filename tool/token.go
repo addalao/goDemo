@@ -1,25 +1,20 @@
 package tool
 
 import (
-	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"goDemo/internal/config"
+	"strconv"
 	"time"
 )
-
-type Claims struct {
-	user_id int
-	exp     int64
-	jwt.RegisteredClaims
-}
 
 // GenerateToken 生成令牌
 func GenerateToken(userID uint, config config.Config) (string, error) {
 
+	id := strconv.FormatUint(uint64(userID), 10)
 	// 创建一个声明（Claims）
 	claims := jwt.MapClaims{
-		"user_id": int(userID),
-		"exp":     time.Now().Add(time.Minute * time.Duration(config.Auth.AccessExpire)).Unix(), // 令牌过期时间（例如，1天后）
+		"userId": id,
+		"exp":    time.Now().Add(time.Minute * time.Duration(config.Auth.AccessExpire)).Unix(), // 令牌过期时间（例如，1天后）
 	}
 	// 使用秘钥签名令牌
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -31,20 +26,4 @@ func GenerateToken(userID uint, config config.Config) (string, error) {
 	}
 
 	return tokenString, nil
-}
-
-func ParseToken(tokenString string, config config.Config) (*Claims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(config.Auth.AccessSecret), nil
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
-		return claims, nil
-	}
-
-	return nil, fmt.Errorf("noToken")
 }

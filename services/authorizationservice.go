@@ -15,8 +15,8 @@ func NewAuthorizationService(accessSecret string) *AuthorizationService {
 	}
 }
 
-func (s *AuthorizationService) ParseTokenString(tokenString string) (*jwt.RegisteredClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &jwt.RegisteredClaims{}, func(token *jwt.Token) (interface{}, error) {
+func (s *AuthorizationService) ParseTokenString(tokenString string) (*jwt.MapClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(s.accessSecret), nil
 	})
 
@@ -25,7 +25,7 @@ func (s *AuthorizationService) ParseTokenString(tokenString string) (*jwt.Regist
 	}
 
 	if token != nil {
-		if claims, ok := token.Claims.(*jwt.RegisteredClaims); ok && token.Valid {
+		if claims, ok := token.Claims.(*jwt.MapClaims); ok && token.Valid {
 			return claims, nil
 		}
 	}

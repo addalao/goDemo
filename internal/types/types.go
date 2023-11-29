@@ -21,6 +21,7 @@ type LogingRes struct {
 type RegisterReq struct {
 	UserName string `json:"userName"`
 	Password string `json:"password"`
+	Gender   int16  `json:"gender"`
 }
 
 type GetDetailsRes struct {
@@ -28,13 +29,26 @@ type GetDetailsRes struct {
 }
 
 type GetContentReq struct {
-	Page     int64 `form:"page"`
-	PageSize int64 `form:"pageSize"`
+	Page     int `form:"page"`
+	PageSize int `form:"pageSize"`
+}
+
+type GetContentRespItem struct {
+	Id      string `json:"id"`
+	UserId  string `json:"userId"`
+	Content string `json:"content"`
+	Title   string `json:"title"`
+	View    int64  `json:"view"`
+	Like    int64  `json:"like"`
+}
+
+type GetContentResp struct {
+	Items []GetContentRespItem `json:"items"`
+	Total int64                `json:"total"`
 }
 
 type AddContentReq struct {
 	Title         string `json:"title"`
 	Content       string `json:"content"`
-	Gender        int16  `json:"gender"` // 1 男 2女
 	Authorization string `header:"authorization, optional"`
 }

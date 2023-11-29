@@ -3,7 +3,6 @@ package svc
 import (
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"goDemo/internal/config"
-	"goDemo/models"
 	"goDemo/services"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -15,6 +14,8 @@ type ServiceContext struct {
 	ContentService       *services.ContentService
 	UserService          *services.UserService
 	AuthorizationService *services.AuthorizationService
+	LikeService          *services.LikeService
+	ViewService          *services.ViewService
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -27,22 +28,13 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	rds := redis.MustNewRedis(c.RedisConf)
 
-	tables := []interface{}{
-		&models.User{},
-	}
-	for _, table := range tables {
-		err := db.AutoMigrate(table)
-
-		if err != nil {
-			panic(err)
-		}
-	}
-
 	return &ServiceContext{
 		Config:               c,
 		Db:                   db,
 		ContentService:       services.NewContentService(db, rds),
 		UserService:          services.NewUserService(db, rds),
 		AuthorizationService: services.NewAuthorizationService(c.Auth.AccessSecret),
+		LikeService:          services.NewLikeService(db),
+		ViewService:          services.NewViewService(db),
 	}
 }

@@ -25,20 +25,24 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(req *types.RegisterReq) error {
+
 	tx := l.svcCtx.Db.First(&models.User{}, "username = ?", req.UserName)
+
 	if tx.RowsAffected != 0 {
-		println("找到")
 		return fmt.Errorf("已有相同用户")
 	}
 
 	// 生成哈希密码
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+
 	if err != nil {
 		return err
 	}
+
 	l.svcCtx.Db.Create(&models.User{
 		Username: req.UserName,
 		Password: string(hashedPassword),
+		Gender:   req.Gender,
 	})
 	return nil
 }
